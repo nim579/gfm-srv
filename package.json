@@ -1,0 +1,33 @@
+{
+  "name": "gfm-srv",
+  "version": "0.0.2",
+  "description": "Github Flavored server",
+  "main": "server.js",
+  "bin": {
+    "gfm-srv": "./bin/gfm-srv"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nim579/gfm-srv.git"
+  },
+  "author": "Nick IV",
+  "license": "MIT",
+  "dependencies": {
+    "marked": "~0.3.2",
+    "commander": "~2.2.0",
+    "node-srv": "~0.3.3",
+    "underscore": "~1.6.0",
+    "highlight.js": "~8.0.0"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "gfm",
+    "markdown",
+    "http server"
+  ],
+  "readmeFilename": "README.md"
+}
