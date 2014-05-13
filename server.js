@@ -12,17 +12,30 @@ var fs      = require('fs')
 marked.setOptions({
   gfm: true,
   tables: true,
-  breaks: false,
-  pedantic: false,
+  breaks: true,
+  pedantic: true,
   sanitize: true,
   smartLists: true,
-  smartypants: false,
+  smartypants: true,
   highlight: function (code) {
     return require('highlight.js').highlightAuto(code).value;
   }
 });
 
 var gfm = srv;
+
+var renderer = new marked.Renderer()
+
+renderer.table = function(header, body) {
+    return '<table class="table table-striped table-bordered">\n'
+    + '<thead>\n' + header + '</thead>\n'
+    + '<tbody>\n' + body + '</tbody>\n'
+    + '</table>\n';
+};
+renderer.heading = function(text, level, raw) {
+    console.log(raw)
+    return '<h'+level+' id="'+this.options.headerPrefix+raw.toLowerCase().replace(/[\s\n]+/g, '-')+ '">'+ text + '</h'+level+'>\n';
+};
 
 _.extend(gfm.prototype, {
     addRequest: function(req, res){
@@ -75,15 +88,16 @@ _.extend(gfm.prototype, {
         if(fs.existsSync(filePath)){
             reqObj.mime = {"Content-Type": "text/html"};
             reqObj.status = 200;
-            fs.readFile(filePath, "binary", function(err, file){
+            fs.readFile(filePath, {encoding: 'utf-8'}, function(err, file){
+                console.log(file)
                 if(err){
                     _this.response500(err, callback);
                     this.errorLog(reqObj, 'Error 500: '+JSON.stringify(err));
                     return false;
                 }
                 try {
-                    reqObj.body = _.template(tmpl, {title: fileName.slice(0,1).toUpperCase() + fileName.slice(1).replace('_', ' '), content: marked(file)});
-                    reqObj.bodyType = "binary";
+                    html = _.template(tmpl, {title: fileName.slice(0,1).toUpperCase() + fileName.slice(1).replace('_', ' '), content: marked(file, {renderer: renderer})});
+                    reqObj.body = html;
 
                     callback(null, reqObj);
                 } catch(e) {
