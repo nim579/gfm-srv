@@ -18,7 +18,7 @@ program
   .option('-l, --logs [path/boolean]', 'Logs writing flag', false)
   .option('--404 [path]', 'Path to 404 error page', null)
   .option('--500 [path]', 'Path to 500 error page', null)
-  .option('-s, --static [path]', 'Sets static folder', path.join(path.dirname(process.mainModule.filename), 'static'))
+  .option('-s, --static [path]', 'Sets static folder', path.join(path.dirname(process.mainModule.filename), './'))
   .parse(process.argv);
 
 var srv = new server(program);

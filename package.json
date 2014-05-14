@@ -1,6 +1,6 @@
 {
   "name": "gfm-srv",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Github Flavored server",
   "main": "server.js",
   "bin": {
