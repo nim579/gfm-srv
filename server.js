@@ -20,7 +20,7 @@ srv.prototype.addRequest = function(req, res){
         reqObj.uri = this.options.index;
     }
 
-    if(_.compact(reqObj.uri.split(path.sep))[0] == 'static'){
+    if(_.compact(reqObj.uri.split('/'))[0] == 'static'){
         reqObj.filename = path.resolve(process.cwd(), this.options.static ? this.options.static : '', reqObj.uri);
     } else {
         reqObj.filename = path.resolve(process.cwd(), this.options.root ? this.options.root : '', reqObj.uri);
