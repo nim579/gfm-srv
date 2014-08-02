@@ -5,32 +5,38 @@ var fs      = require('fs')
   , _       = require('underscore')
   , tmpl    = require('./template')
   , render  = require('./renderer')
+  , pkg     = require('./package.json')
   , mdExts  = ['.md', '.markdown'];
 
-srv.prototype.addRequest = function(req, res){
-    reqObj = {
-        request: req,
-        response: res,
-        uid: _.random(0, 10000000),
-        startTime: new Date(),
-        uri: url.parse(req.url).pathname.replace(/^\//, '').replace(/\/$/, '/'+this.options.index),
-        body: ''
-    }
-    if(reqObj.uri.length === 0){
-        reqObj.uri = this.options.index;
-    }
+var gfmSrv = srv.extend({
+    name: pkg.name,
+    version: pkg.version,
 
-    if(_.compact(reqObj.uri.split('/'))[0] == 'static'){
-        reqObj.filename = path.resolve(process.cwd(), this.options.static ? this.options.static : '', reqObj.uri);
-    } else {
-        reqObj.filename = path.resolve(process.cwd(), this.options.root ? this.options.root : '', reqObj.uri);
+    addRequest: function(req, res){
+        reqObj = {
+            request: req,
+            response: res,
+            uid: _.random(0, 10000000),
+            startTime: new Date(),
+            uri: url.parse(req.url).pathname.replace(/^\//, '').replace(/\/$/, '/'+this.options.index),
+            body: ''
+        }
+        if(reqObj.uri.length === 0){
+            reqObj.uri = this.options.index;
+        }
+
+        if(_.compact(reqObj.uri.split('/'))[0] == 'static'){
+            reqObj.filename = path.resolve(process.cwd(), this.options.static ? this.options.static : '', reqObj.uri);
+        } else {
+            reqObj.filename = path.resolve(process.cwd(), this.options.root ? this.options.root : '', reqObj.uri);
+        }
+
+        this.stack.push(reqObj);
+        this.ev.emit('request');
     }
+});
 
-    this.stack.push(reqObj);
-    this.ev.emit('request');
-}
-
-srv.extendHandlers({
+gfmSrv.extendHandlers({
     extnames: mdExts,
     method: function(reqObj, callback){
         var err = null;
@@ -58,4 +64,4 @@ srv.extendHandlers({
     }
 });
 
-module.exports = srv;
+module.exports = gfmSrv;

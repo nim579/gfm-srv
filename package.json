@@ -1,6 +1,6 @@
 {
   "name": "gfm-srv",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "description": "Github Flavored server",
   "main": "server.js",
   "bin": {
@@ -21,7 +21,7 @@
     "commander": "~2.2.0",
     "underscore": "~1.6.0",
     "highlight.js": "~8.0.0",
-    "node-srv": "~1.0.1"
+    "node-srv": "~1.0.3"
   },
   "devDependencies": {},
   "keywords": [
