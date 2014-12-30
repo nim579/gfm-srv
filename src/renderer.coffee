@@ -1,39 +1,46 @@
-marked = require 'marked'
-_      = require 'underscore'
-
-marked.setOptions
-    gfm: true
-    tables: true
-    breaks: true
-    pedantic: true
-    sanitize: true
-    smartLists: true
-    smartypants: true
-    highlight: (code)->
-        return require('highlight.js').highlightAuto(code).value
+Remarkable = require 'remarkable'
+_          = require 'underscore'
+hljs       = require 'highlight.js'
 
 navigation = []
-renderer = new marked.Renderer()
 
-renderer.table = (header, body)->
-    return """
-           <table class="table table-striped table-bordered">
-           <thead>#{header}</thead>
-           <tbody>#{body}</tbody>
-           </table>
-           """
 
-renderer.heading = (text, level, raw)->
-    link = @options.headerPrefix + raw.toLowerCase().replace(/[\s\n]+/g, '-')
+md = new Remarkable 'full',
+    html: true
+    linkify: true
+    typographer: true
+
+    highlight: (str, lang)->
+        if lang and hljs.getLanguage(lang)
+            try
+                return hljs.highlight(lang, str).value
+
+            catch e
+
+        try
+            return hljs.highlightAuto(str).value
+
+        catch e
+
+        return ''
+
+md.renderer.rules.heading_open = (tokens, idx)->
+    text = tokens[idx+1].content
+    link = tokens[idx+1].content.toLowerCase().replace(/[\s\n]+/g, '-')
+
     navigation.push
-        level: level
+        level: tokens[idx+1].level
         text: text
         link: '#' + link
 
-    return "<h#{level} id=\"#{link}\">#{text}</h#{level}>\n"
+    return "<h#{tokens[idx].hLevel} id=\"#{link}\">"
+
+md.renderer.rules.table_open ->
+    return '<table class="table table-striped table-bordered">'
+
 
 module.exports = (mdSrc)->
-    html = marked mdSrc, renderer: renderer
+    html = md.render mdSrc
     navi = _.clone navigation
     navigation = []
     return html: html, navigation: navi
