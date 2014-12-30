@@ -1,8 +1,8 @@
 {
   "name": "gfm-srv",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "Github Flavored server",
-  "main": "server.js",
+  "main": "lib/server.js",
   "bin": {
     "gfm-srv": "./bin/gfm-srv"
   },
@@ -17,13 +17,16 @@
   "author": "Nick IV",
   "license": "MIT",
   "dependencies": {
+    "commander": "^2.2.0",
+    "highlight.js": "^8.0.0",
     "marked": "~0.3.2",
-    "commander": "~2.2.0",
-    "underscore": "~1.6.0",
-    "highlight.js": "~8.0.0",
-    "node-srv": "~1.0.3"
+    "node-srv": "^1.2.4",
+    "underscore": "^1.6.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-coffee": "^0.12.0"
+  },
   "keywords": [
     "gfm",
     "markdown",

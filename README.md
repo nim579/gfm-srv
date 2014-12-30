@@ -40,11 +40,13 @@ gfmSrv.stop();
 
 - **-r, --root [path]** — Path, for server root-folder (default *./*)
 - **-p, --port [number]** — Port on which the server is started (default *8000*, or env PORT)
+- **-h, --host [host]** — Host or ip address on which the server will work (any host by default)
 - **-i, --index [file]** — Sets the index file for opening like default file in directories. For example: for uri */test/*, server open *test/index.html*. Default *index.html*
 - **-l, --logs [path/boolean]** — Write logs flag. If you specify a path, it will write to this file (if path is folder, default filename node-srv.log) 
 - **--404 [path]** — Path to 404 error page
 - **--500 [path]** — Path to 500 error page
 - **-s, --static [path]** — Sets path to folder with static files. Default `./static` in this module
+- **-t, --template [path]** — Sets path to page template. Default `./templates/main.html` in this module
 
 ## Use for [Heroku](https://heroku.com)
 
