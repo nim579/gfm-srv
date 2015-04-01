@@ -60,7 +60,8 @@ gfmSrv.extendHandlers
 
             try
                 readyFile = render file
-                html = _.template @_tmpl,
+                template = _.template @_tmpl
+                html = template
                     title: fileName.slice(0,1).toUpperCase() + fileName.slice(1).replace('_', ' ')
                     content: readyFile.html
                     navigation: readyFile.navigation
